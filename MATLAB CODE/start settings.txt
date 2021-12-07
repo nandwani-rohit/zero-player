@@ -1,0 +1,9 @@
+% For docking figures by default
+set(0,'DefaultFigureWindowStyle','docked')
+
+% For changing the figures property back to normal
+set(0, 'DefaultFigureWindowStyle', 'normal')
+
+% For setting default line width in plots
+set(groot,'defaultLineLineWidth',1.0)
+** DEFAULT width = 0.5

@@ -1,0 +1,41 @@
+function [status, distance] = objectiveFun(u_x, u_y)
+    global ball ballData walls winZone boundaryWidth boundaryHeight lambda o_x o_y;
+
+    status = -1;
+    distance = 0;
+    
+    ball.x = boundaryWidth * ballData(1)/100;
+    ball.y = boundaryHeight * ballData(2)/100;
+    ball.v_x = u_x;
+    ball.v_y = u_y;
+
+    running = true;
+    counter = 0;
+    while running
+        ball.update();
+
+        if (ball.x >= boundaryWidth || ball.x <= 0 || ball.y >= boundaryHeight || ball.y <= 0)
+            status = 0;
+            distance = lambda * sqrt((ball.x - o_x)^2 + (ball.y - o_y)^2);
+            running = false;
+            break;
+        else
+            if (winZone.checkCollision(ball))
+                status = 1;
+                distance = sqrt((ball.x - o_x)^2 + (ball.y - o_y)^2);
+                running = false;
+                break;
+            end
+        end
+        
+        ball.checkCollision(walls);
+        counter = counter + 1;
+        
+        disp(sprintf("%d | %.7f %.7f %.7f %.7f", counter, ball.x, ball.y, ball.v_x, ball.v_y));
+        
+        if (counter >= 10000)
+            running = false;
+            status = -2;
+        end
+    end        
+end
